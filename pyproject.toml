@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "movie-tracker"
+version = "0.1.0"
+description = ""
+authors = ["Schwifter <d.goglidze@sangu.edu.ge>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "0.115.*"
+sqlmodel = "^0.0.24"
+uvicorn = "0.34.*"
+typer = "*"
+
+[tool.poetry.group.lint.dependencies]
+mypy = "*"
+ruff = "*"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    "venv",
+]
