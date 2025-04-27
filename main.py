@@ -14,16 +14,18 @@ def get_session():
 app = FastAPI()
 
 
-class Movies(SQLModel, table=True):
+class Movie(SQLModel, table=True):
+    __tablename__ = "movies"
+
     id: str = Field(default=None, primary_key=True)
     name: str
     year: int
     note: str | None = None
 
 
-@app.get("/movies", response_model=Movies)
+@app.get("/movies", response_model=Movie)
 def movies(movie_id: str, session: Session = Depends(get_session)):
-    movie = session.get(Movies, movie_id)
+    movie = session.get(Movie, movie_id)
 
     if not movie:
         raise HTTPException(status_code=404, detail="Movie not found")
