@@ -31,3 +31,12 @@ def read_one(movie_id: str, session: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Movie not found")
 
     return movie
+
+
+@app.post("/movies", response_model=Movie)
+def create_one(movie: Movie, session: Session = Depends(get_session)):
+    session.add(movie)
+    session.commit()
+    session.refresh(movie)
+
+    return movie
