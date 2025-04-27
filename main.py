@@ -1,9 +1,17 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from sqlmodel import SQLModel, Field, create_engine, Session
 
-app = FastAPI()
-engine = create_engine("sqlite:///movies.sqlite")
+database = "sqlite:///movies.sqlite"
+engine = create_engine(database)
 SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+
+app = FastAPI()
 
 
 class Movies(SQLModel, table=True):
@@ -14,9 +22,8 @@ class Movies(SQLModel, table=True):
 
 
 @app.get("/movies", response_model=Movies)
-def movies(movie_id: str):
-    with Session(engine) as session:
-        movie = session.get(Movies, movie_id)
+def movies(movie_id: str, session: Session = Depends(get_session)):
+    movie = session.get(Movies, movie_id)
 
     if not movie:
         raise HTTPException(status_code=404, detail="Movie not found")
