@@ -24,7 +24,7 @@ class Movie(SQLModel, table=True):
 
 
 @app.get("/movies", response_model=Movie)
-def movies(movie_id: str, session: Session = Depends(get_session)):
+def read_one(movie_id: str, session: Session = Depends(get_session)):
     movie = session.get(Movie, movie_id)
 
     if not movie:
