@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlmodel import SQLModel, Field, create_engine, Session, select
 
-connect_args = {"check_same_thread": False}
 engine = create_engine(
     "sqlite:///movies_db.sqlite",
     echo=True,
-    connect_args=connect_args,
+    connect_args={"check_same_thread": False},
 )
 SQLModel.metadata.create_all(engine)
 
